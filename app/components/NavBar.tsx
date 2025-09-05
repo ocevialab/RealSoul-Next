@@ -47,7 +47,7 @@ export default function Navbar() {
   return (
     <nav
       ref={navRef}
-      className="fixed inset-x-0 top-0 z-50 bg-[#0A0E14]/20 backdrop-blur supports-[backdrop-filter]:bg-[#0A0E14]/20 shadow-md"
+      className="fixed inset-x-0 top-0 z-50 bg-[#0A0E14]/20 backdrop-blur supports-[backdrop-filter]:bg-[#0A0E14]/20 shadow-md font-grotesk"
     >
       <div className="mx-auto flex max-w-[1500px] items-center justify-between px-4 py-3 md:px-16">
         {/* Logo */}
@@ -96,7 +96,7 @@ export default function Navbar() {
             <li key={item.href}>
               <Link
                 href={item.href}
-                className={`block rounded-md px-4 py-2 text-sm font-semibold transition-colors ${
+                className={`block rounded-md px-4 py-2 text-md font-semibold font-freight transition-colors ${
                   isActive(item.href)
                     ? "text-[#d4af37]"
                     : "text-white hover:text-[#d4af37]"
@@ -116,7 +116,7 @@ export default function Navbar() {
         }`}
       >
         <div
-          className={`absolute left-0 right-0 top-full origin-top bg-[#0A0E14]/40 backdrop-blur supports-[backdrop-filter]:bg-[#0A0E14]/40 shadow-lg transition-all duration-300 ${
+          className={`absolute left-0 right-0 top-full origin-top bg-[#0A0E14]/40 backdrop-blur supports-[backdrop-filter]:bg-[#0A0E14]/40 shadow-lg transition-all duration-300  ${
             open ? "scale-y-100 opacity-100" : "scale-y-95 opacity-0"
           }`}
         >
@@ -126,7 +126,7 @@ export default function Navbar() {
                 <Link
                   href={item.href}
                   onClick={() => setOpen(false)}
-                  className={`block rounded-md px-4 py-3 text-center text-base font-semibold transition-colors ${
+                  className={`block rounded-md px-4 py-3 text-center text-base font-grotesk transition-colors ${
                     isActive(item.href)
                       ? "text-[#d4af37]"
                       : "text-white hover:text-[#d4af37]"

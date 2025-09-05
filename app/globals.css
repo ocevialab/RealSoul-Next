@@ -1,33 +1,134 @@
 @import "tailwindcss";
 
+/* 1) Register all weights you actually use (400/600/700 shown here) */
+@font-face {
+  font-family: "FreightNeo";
+  src: url("/fonts/ferighNeo/fonnts.com-FreightNeoCnd_Pro_Light.otf")
+    format("opentype");
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "FreightNeo";
+  src: url("/fonts/ferighNeo/fonnts.com-FreightNeoCnd_Pro_Book.otf")
+    format("opentype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "FreightNeo";
+  src: url("/fonts/ferighNeo/fonnts.com-FreightNeoCnd_Pro_Medium.otf")
+    format("opentype");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "FreightNeo";
+  src: url("/fonts/ferighNeo/fonnts.com-FreightNeoCnd_Pro_Semi.otf")
+    format("opentype");
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "FreightNeo";
+  src: url("/fonts/ferighNeo/fonnts.com-FreightNeoCnd_Pro_Bold.otf")
+    format("opentype");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Host Grotesk */
+@font-face {
+  font-family: "HostGrotesk";
+  src: url("/fonts/Host_Grotesk/HostGrotesk-Light.ttf") format("truetype");
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "HostGrotesk";
+  src: url("/fonts/Host_Grotesk/HostGrotesk-Regular.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "HostGrotesk";
+  src: url("/fonts/Host_Grotesk/HostGrotesk-Medium.ttf") format("truetype");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "HostGrotesk";
+  src: url("/fonts/Host_Grotesk/HostGrotesk-SemiBold.ttf") format("truetype");
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "HostGrotesk";
+  src: url("/fonts/Host_Grotesk/HostGrotesk-Bold.ttf") format("truetype");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Oleo Script (regular + bold) */
+@font-face {
+  font-family: "Oleo";
+  src: url("/fonts/oleo/OleoScriptSwashCaps-Regular.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Oleo";
+  src: url("/fonts/oleo/OleoScriptSwashCaps-Bold.ttf") format("truetype");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* 2) Tell Tailwind v4 to create font utilities */
+@theme inline {
+  --font-freight: "FreightNeo", serif;
+  --font-grotesk: "HostGrotesk", ui-sans-serif, system-ui, sans-serif;
+  --font-oleo: "Oleo", cursive;
+
+  /* optional: your existing colors/vars */
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+}
+
+/* Your old variables */
 :root {
   --background: #ffffff;
   --foreground: #171717;
 }
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
 @media (prefers-color-scheme: dark) {
   :root {
     --background: #0a0a0a;
-    --foreground: #ededed;
   }
+}
+
+html {
+  margin: 0;
+  padding: 0;
 }
 
 body {
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
   margin: 0;
   padding: 0;
-
-  background-image: url("/assets/images/bg.gif"); /* path to your image */
-  background-size: cover; /* make it cover the viewport */
-  background-position: center; /* center the image */
-  background-repeat: no-repeat; /* prevent tiling */
-  background-attachment: fixed; /* <-- keeps image fixed while scrolling */
+  background-image: url("/assets/images/bg.gif");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
 }
