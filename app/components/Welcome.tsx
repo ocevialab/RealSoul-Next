@@ -38,7 +38,7 @@ export default function Welcome() {
         scrollTrigger: {
           trigger: sectionRef.current!,
           start: "top 80%",
-          end: "bottom 20%",
+          end: "bottom 0%",
           toggleActions: "play reverse play reverse",
           // play when enter, reverse when leave
           // re-play when re-enter, reverse again when leave back

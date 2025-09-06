@@ -53,7 +53,7 @@ export default function Gallery() {
           scrollTrigger: {
             trigger: el,
             start: "top 85%",
-            end: "top 25%",
+            end: "top 0%",
             toggleActions: "play reverse play reverse", // ✅ reverse for text
             invalidateOnRefresh: true,
           },
