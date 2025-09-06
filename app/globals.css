@@ -5,7 +5,7 @@
   font-family: "FreightNeo";
   src: url("/fonts/ferighNeo/fonnts.com-FreightNeoCnd_Pro_Light.otf")
     format("opentype");
-  font-weight: 300;
+  /* font-weight: 300; */
   font-style: normal;
   font-display: swap;
 }

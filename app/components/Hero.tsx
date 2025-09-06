@@ -100,7 +100,7 @@ export default function Hero() {
   return (
     <section
       ref={containerRef}
-      className="relative h-screen w-screen overflow-hidden"
+      className="relative h-screen w-full overflow-hidden"
     >
       {/* Slides */}
       {IMAGES.map((src, idx) => (

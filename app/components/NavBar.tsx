@@ -50,7 +50,7 @@ export default function Navbar() {
       // className="fixed inset-x-0 top-0 z-50
       //  bg-[#0A0E14]/20 backdrop-blur supports-[backdrop-filter]:bg-[#0A0E14]/20 shadow-md
       //  font-grotesk"
-      className="fixed inset-x-0 top-0 z-50
+      className="fixed inset-x-0 top-0 z-50 w-screen
       
        font-grotesk"
     >
