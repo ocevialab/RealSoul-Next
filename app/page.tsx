@@ -1,3 +1,4 @@
+import DrivenList from "./components/DrivenList";
 import Gallery from "./components/Gallery";
 import Hero from "./components/Hero";
 import Services from "./components/Services";
@@ -11,6 +12,8 @@ export default function Home() {
       <Gallery />
       <div className="pointer-events-none inset-x-0 bottom-0 h-[50px]  md:h-[100px] bg-gradient-to-t from-darkGreen/80 to-darkGreen" />
       <Services />
+      <div className="pointer-events-none inset-x-0 bottom-0 h-[50px]  md:h-[100px] bg-gradient-to-b from-darkGreen/80 to-darkGreen/95" />
+      <DrivenList />
     </div>
   );
 }
