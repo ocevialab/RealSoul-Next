@@ -47,9 +47,14 @@ export default function Navbar() {
   return (
     <nav
       ref={navRef}
-      className="fixed inset-x-0 top-0 z-50 bg-[#0A0E14]/20 backdrop-blur supports-[backdrop-filter]:bg-[#0A0E14]/20 shadow-md font-grotesk"
+      // className="fixed inset-x-0 top-0 z-50
+      //  bg-[#0A0E14]/20 backdrop-blur supports-[backdrop-filter]:bg-[#0A0E14]/20 shadow-md
+      //  font-grotesk"
+      className="fixed inset-x-0 top-0 z-50
+      
+       font-grotesk"
     >
-      <div className="mx-auto flex max-w-[1500px] items-center justify-between px-4 py-3 md:px-16">
+      <div className="mx-auto flex  items-center justify-between px-4 py-3 md:px-16">
         {/* Logo */}
         <Link
           href="/"
@@ -96,10 +101,10 @@ export default function Navbar() {
             <li key={item.href}>
               <Link
                 href={item.href}
-                className={`block rounded-md px-4 py-2 text-md font-semibold font-freight transition-colors ${
+                className={`block rounded-md px-4 py-2 text-lg font-semibold font-freight transition-colors ${
                   isActive(item.href)
-                    ? "text-[#d4af37]"
-                    : "text-white hover:text-[#d4af37]"
+                    ? "text-gold"
+                    : "text-gold/80 hover:text-gold"
                 }`}
               >
                 {item.label}

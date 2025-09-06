@@ -104,6 +104,9 @@
   /* optional: your existing colors/vars */
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+
+  --color-gold: #e0b783;
+  --color-darkGreen: #0f1312;
 }
 
 /* Your old variables */
@@ -117,15 +120,17 @@
   }
 }
 
-html {
+html,
+body {
   margin: 0;
   padding: 0;
 }
-
+* {
+  box-sizing: border-box;
+}
 body {
   color: var(--foreground);
-  margin: 0;
-  padding: 0;
+
   background-image: url("/assets/images/bg.gif");
   background-size: cover;
   background-position: center;

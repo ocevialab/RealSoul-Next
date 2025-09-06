@@ -8,6 +8,10 @@ const config: Config = {
       grotesk: ["HostGrotesk", "sans-serif"],
       oleo: ["Oleo", "cursive"],
     },
+    color: {
+      gold: "#E0B783",
+      darkGreen: "#0A0E14",
+    },
   },
   plugins: [],
 };
