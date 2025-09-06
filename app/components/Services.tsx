@@ -78,7 +78,7 @@ export default function Services() {
           scrollTrigger: {
             trigger: el,
             start: "top 85%",
-            end: "top 10%",
+            end: "top 0%",
             toggleActions: "play reverse play reverse",
             invalidateOnRefresh: true,
           },
