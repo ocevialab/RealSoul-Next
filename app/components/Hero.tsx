@@ -126,7 +126,7 @@ export default function Hero() {
       ))}
 
       {/* Optional: gradient at bottom */}
-      {/* <div className="pointer-events-none absolute inset-x-0 bottom-0 h-[90%] bg-gradient-to-b from-transparent to-[#0F1312]" /> */}
+      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-[20%] bg-gradient-to-b from-transparent to-darkGreen" />
 
       {/* Optional: overlay content layer */}
       {/* <div className="relative z-10 flex h-full items-end p-6 md:p-12">
