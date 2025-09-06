@@ -125,7 +125,7 @@ export default function Services() {
             data-reveal-text
             className="mb-4 font-freight text-2xl font-bold tracking-[0.12em] sm:text-3xl md:text-4xl lg:text-5xl text-gold"
           >
-            Why Choose Us
+            Why Choose Me
           </h2>
           <p
             data-reveal-text
