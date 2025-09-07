@@ -203,11 +203,11 @@ export default function DrivenList() {
   }, []);
 
   return (
-    <section ref={sectionRef} className="text-white bg-darkGreen/95">
-      <div className="mx-auto lg:px-24 md:px-12 px-6 bg-gradient-to-r from-transparent from-[20%] via-darkGreen via-[50%] to-transparent to-[80%]">
+    <section ref={sectionRef} className="text-white bg-darkGreen/95  ">
+      <div className="mx-auto lg:px-24 md:px-12 px-6 bg-gradient-to-r from-transparent from-[20%] via-darkGreen via-[50%] to-transparent to-[80%] md:pb-12 pb-6">
         <h2
           data-reveal-title
-          className="text-center font-freight text-2xl sm:text-3xl md:text-4xl font-bold tracking-wide text-gold"
+          className="text-center font-freight text-2xl sm:text-3xl md:text-4xl font-bold tracking-wide text-gold md:pt-12 pt-6"
         >
           Driven by Passion, Delivered to You
         </h2>
