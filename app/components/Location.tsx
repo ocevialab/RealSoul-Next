@@ -8,16 +8,15 @@ import { Carousel } from "./carousel";
 
 function Location() {
   const sectionRef = useRef<HTMLDivElement>(null);
+
   useLayoutEffect(() => {
     if (!sectionRef.current) return;
-
     const prefersReduced = window.matchMedia(
       "(prefers-reduced-motion: reduce)"
     ).matches;
     if (prefersReduced) return;
 
     const ctx = gsap.context(() => {
-      // TEXT — play + reverse
       const textEls = gsap.utils.toArray<HTMLElement>("[data-reveal-text]");
       textEls.forEach((el) => {
         gsap.set(el, { y: 30, scale: 0.9, opacity: 0 });
@@ -43,34 +42,55 @@ function Location() {
 
   const slideData = [
     {
-      title: "This spot offers the perfect winter backdrop for photography",
-      // button: "Explore Component",
+      title: "This spot offers the perfect winter backdrop for photography",
       src: "assets/images/location1.jpg",
+      gallery: [
+        "assets/images/location1-a.jpg",
+        "assets/images/location1-b.jpg",
+        "assets/images/location1-a.jpg",
+        "assets/images/location1-b.jpg",
+      ],
     },
     {
-      title: "This spot offers the perfect winter backdrop for photography",
-      // button: "Explore Component",
+      title: "This spot offers the perfect winter backdrop for photography",
       src: "assets/images/location2.jpg",
+      gallery: [
+        "assets/images/location1-a.jpg",
+        "assets/images/location1-b.jpg",
+        "assets/images/location1-a.jpg",
+        "assets/images/location1-b.jpg",
+      ],
     },
     {
-      title: "This spot offers the perfect winter backdrop for photography",
-      // button: "Explore Component",
+      title: "This spot offers the perfect winter backdrop for photography",
       src: "assets/images/location4.jpg",
+      gallery: [
+        "assets/images/location1-a.jpg",
+        "assets/images/location1-b.jpg",
+        "assets/images/location1-a.jpg",
+        "assets/images/location1-b.jpg",
+      ],
     },
     {
-      title: "This spot offers the perfect winter backdrop for photography",
-      // button: "Explore Component",
+      title: "This spot offers the perfect winter backdrop for photography",
       src: "assets/images/location3.jpg",
+      gallery: [
+        "assets/images/location1-a.jpg",
+        "assets/images/location1-b.jpg",
+        "assets/images/location1-a.jpg",
+        "assets/images/location1-b.jpg",
+      ],
     },
   ];
+
   return (
     <div
-      className="relative overflow-hidden w-full h-full py-20 bg-darkGreen/30 "
+      className="relative w-full overflow-hidden bg-darkGreen/30 py-20"
       ref={sectionRef}
     >
       <h2
         data-reveal-text
-        className="mb-4 font-freight text-2xl font-bold tracking-[0.12em] sm:text-3xl md:text-4xl lg:text-5xl text-gold w-full text-center md:p-8"
+        className="mb-4 w-full text-center font-freight text-2xl font-bold tracking-[0.12em] text-gold sm:text-3xl md:p-8 md:text-4xl lg:text-5xl"
       >
         Perfect Setting, Perfect Picture
       </h2>
