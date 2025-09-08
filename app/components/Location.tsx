@@ -47,8 +47,8 @@ function Location() {
       gallery: [
         "assets/images/location1-a.jpg",
         "assets/images/location1-b.jpg",
-        "assets/images/location1-a.jpg",
-        "assets/images/location1-b.jpg",
+        "assets/images/location1-c.jpg",
+        "assets/images/location1-d.jpg",
       ],
     },
     {
