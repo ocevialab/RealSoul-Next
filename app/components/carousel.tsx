@@ -2,6 +2,7 @@
 import { FaArrowRight } from "react-icons/fa";
 import { useState, useRef, useId, useEffect, useLayoutEffect } from "react";
 import gsap from "gsap";
+import CustomCursor from "./CustomCursor";
 
 export interface SlideData {
   title: string;
@@ -16,6 +17,7 @@ interface SlideProps {
   current: number;
   handleSlideClick: (index: number) => void;
   onOpenGallery: (slide: SlideData) => void;
+  setCursorVisible: (show: boolean) => void;
 }
 
 const Slide = ({
@@ -24,6 +26,7 @@ const Slide = ({
   current,
   handleSlideClick,
   onOpenGallery,
+  setCursorVisible,
 }: SlideProps) => {
   const slideRef = useRef<HTMLLIElement>(null);
 
@@ -57,40 +60,35 @@ const Slide = ({
   const handleMouseLeave = () => {
     xRef.current = 0;
     yRef.current = 0;
-  };
-
-  const imageLoaded = (event: React.SyntheticEvent<HTMLImageElement>) => {
-    event.currentTarget.style.opacity = "1";
+    setCursorVisible(false);
   };
 
   const { src, title } = slide;
+  const isActive = current === index;
 
   // center => open gallery; side => navigate
   const onClick = () =>
-    current === index ? onOpenGallery(slide) : handleSlideClick(index);
-
-  // Custom cursor (place SVGs at /public/cursors/zoom.svg and /public/cursors/arrow.svg)
-  const cursor =
-    current === index
-      ? 'url("/cursors/zoom.svg") 16 16, zoom-in'
-      : 'url("/cursors/arrow.svg") 8 8, pointer';
+    isActive ? onOpenGallery(slide) : handleSlideClick(index);
 
   return (
-    <div className="[perspective:1200px] [transform-style:preserve-3d]">
+    <div className="[perspective:1200px] [transform-style:preserve-3d] cursor-auto">
       <li
         ref={slideRef}
         className="relative mx-[4vmin] flex h-[70vmin] w-[70vmin] flex-1 list-none items-center justify-center text-center text-white"
         onClick={onClick}
-        onMouseMove={handleMouseMove}
+        onMouseMove={(e) => {
+          handleMouseMove(e);
+          if (isActive) setCursorVisible(true);
+        }}
+        onMouseEnter={() => isActive && setCursorVisible(true)}
         onMouseLeave={handleMouseLeave}
         style={{
-          cursor,
-          transform:
-            current !== index
-              ? "scale(0.98) rotateX(8deg)"
-              : "scale(1) rotateX(0deg)",
+          transform: isActive
+            ? "scale(1) rotateX(0deg)"
+            : "scale(0.98) rotateX(8deg)",
           transition: "transform 500ms cubic-bezier(0.4, 0, 0.2, 1)",
           transformOrigin: "bottom",
+          // no custom native cursor; keep default
         }}
         aria-roledescription="slide"
         aria-label={`${index + 1}`}
@@ -99,19 +97,17 @@ const Slide = ({
         <div
           className="absolute inset-0 overflow-hidden rounded-[12px] bg-[#1D1F2F]"
           style={{
-            transform:
-              current === index
-                ? "translate3d(calc(var(--x) / 30), calc(var(--y) / 30), 0)"
-                : "none",
+            transform: isActive
+              ? "translate3d(calc(var(--x) / 30), calc(var(--y) / 30), 0)"
+              : "none",
             transition: "transform 150ms ease-out",
           }}
         >
           <img
             className="absolute inset-0 h-[120%] w-[120%] object-cover opacity-100 transition-opacity duration-700 ease-in-out"
-            style={{ opacity: current === index ? 1 : 0.55 }}
+            style={{ opacity: isActive ? 1 : 0.55 }}
             alt={title}
             src={src}
-            onLoad={imageLoaded}
             loading="eager"
             decoding="sync"
           />
@@ -120,15 +116,15 @@ const Slide = ({
           <div className="pointer-events-none absolute inset-x-0 bottom-0 h-[80%] bg-gradient-to-t from-black/80 via-black/50 to-transparent" />
 
           {/* mild extra dim when active */}
-          {current === index && (
+          {isActive && (
             <div className="pointer-events-none absolute inset-0 bg-black/10 transition-all duration-700" />
           )}
         </div>
 
-        {/* Title bottom-left */}
+        {/* Title bottom-left (only on active) */}
         <article
           className={`pointer-events-none absolute inset-0 flex items-end p-[4vmin] transition-opacity duration-700 ${
-            current === index ? "opacity-100" : "opacity-0"
+            isActive ? "opacity-100" : "opacity-0"
           }`}
         >
           <div className="max-w-[80%] text-left">
@@ -180,7 +176,6 @@ function GalleryModal({
   const panelRef = useRef<HTMLDivElement>(null);
   const tlRef = useRef<gsap.core.Timeline | null>(null);
 
-  // Open animation
   useLayoutEffect(() => {
     const reduce =
       typeof window !== "undefined" &&
@@ -189,7 +184,6 @@ function GalleryModal({
     const ctx = gsap.context(() => {
       const tiles = gsap.utils.toArray<HTMLDivElement>(".js-modal-tile");
 
-      // initial state
       gsap.set(backdropRef.current, { opacity: 0 });
       gsap.set(panelRef.current, { opacity: 0, y: 10, scale: 0.98 });
       gsap.set(tiles, { opacity: 0, scale: 0.92 });
@@ -221,7 +215,6 @@ function GalleryModal({
       }
     });
 
-    // focus & lock scroll
     panelRef.current?.focus();
     const prev = document.body.style.overflow;
     document.body.style.overflow = "hidden";
@@ -232,7 +225,6 @@ function GalleryModal({
     };
   }, []);
 
-  // Close with reversed timeline (then unmount)
   const animateClose = () => {
     const reduce =
       typeof window !== "undefined" &&
@@ -246,14 +238,12 @@ function GalleryModal({
     }
   };
 
-  // Esc key
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => e.key === "Escape" && animateClose();
     document.addEventListener("keydown", onKey);
     return () => document.removeEventListener("keydown", onKey);
   }, []);
 
-  // Backdrop click
   const onBackdropClick = (e: React.MouseEvent<HTMLDivElement>) => {
     if (e.target === e.currentTarget) animateClose();
   };
@@ -270,9 +260,8 @@ function GalleryModal({
       <div
         ref={panelRef}
         tabIndex={-1}
-        className="relative w-full max-w-lg outline-none sm:max-w-xl md:max-w-2xl"
+        className="relative w-full max-w-lg outline-none sm:max-w-xl md:max-w-4xl"
       >
-        {/* Close */}
         <button
           onClick={animateClose}
           className="absolute right-2 top-2 z-[1001] rounded-full bg-white/90 px-3 py-1 text-sm font-medium text-black shadow hover:bg-white focus:outline-none focus:ring-2 focus:ring-white"
@@ -286,13 +275,12 @@ function GalleryModal({
           </h3>
         )}
 
-        {/* Compact tiles with stagger */}
-        <div className="grid grid-cols-2 place-items-center gap-3">
+        <div className="grid md:grid-cols-2 grid-col-1 place-items-center gap-3">
           {images.slice(0, 4).map((src, i) => (
             <div
               key={i}
-              className="js-modal-tile relative overflow-hidden rounded-lg"
-              style={{ width: "20rem", aspectRatio: "4/3" }} // ~120px tiles
+              className="js-modal-tile relative md:overflow-hidden rounded-lg md:w-[400px] md:h-[340px] w-full h-[120px]"
+              // style={{ width: "20rem", aspectRatio: "5/3" }}
             >
               <img
                 src={src}
@@ -315,10 +303,36 @@ interface CarouselProps {
 
 export function Carousel({ slides }: CarouselProps) {
   const [current, setCurrent] = useState(0);
+
+  // modal
   const [modalOpen, setModalOpen] = useState(false);
   const [modalImages, setModalImages] = useState<string[]>([]);
   const [modalTitle, setModalTitle] = useState<string | undefined>(undefined);
+
+  // custom cursor state
+  const [cursorX, setCursorX] = useState(0);
+  const [cursorY, setCursorY] = useState(0);
+  const [cursorVisible, setCursorVisible] = useState(false);
+
   const id = useId();
+  const wrapperRef = useRef<HTMLDivElement>(null);
+
+  // global mouse tracking (only while inside wrapper)
+  useEffect(() => {
+    const onMove = (e: MouseEvent) => {
+      setCursorX(e.clientX);
+      setCursorY(e.clientY);
+    };
+    const el = wrapperRef.current;
+    if (!el) return;
+
+    el.addEventListener("mousemove", onMove);
+    el.addEventListener("mouseleave", () => setCursorVisible(false));
+    return () => {
+      el.removeEventListener("mousemove", onMove);
+      el.removeEventListener("mouseleave", () => setCursorVisible(false));
+    };
+  }, []);
 
   const handlePreviousClick = () => {
     const previous = current - 1;
@@ -347,6 +361,7 @@ export function Carousel({ slides }: CarouselProps) {
 
   return (
     <div
+      ref={wrapperRef}
       className="relative mx-auto h-[70vmin] w-[70vmin]"
       aria-labelledby={`carousel-heading-${id}`}
       aria-roledescription="carousel"
@@ -366,6 +381,7 @@ export function Carousel({ slides }: CarouselProps) {
             current={current}
             handleSlideClick={handleSlideClick}
             onOpenGallery={onOpenGallery}
+            setCursorVisible={setCursorVisible}
           />
         ))}
       </ul>
@@ -392,6 +408,9 @@ export function Carousel({ slides }: CarouselProps) {
           onClose={() => setModalOpen(false)}
         />
       )}
+
+      {/* Custom Cursor (only appears when hovering active slide) */}
+      <CustomCursor x={cursorX} y={cursorY} show={cursorVisible} label="view" />
     </div>
   );
 }
