@@ -1,6 +1,7 @@
 "use client";
 import { FaArrowRight } from "react-icons/fa";
-import { useState, useRef, useId, useEffect } from "react";
+import { useState, useRef, useId, useEffect, useLayoutEffect } from "react";
+import gsap from "gsap";
 
 export interface SlideData {
   title: string;
@@ -64,15 +65,11 @@ const Slide = ({
 
   const { src, title } = slide;
 
-  // Click behavior:
-  // - center slide => open gallery
-  // - side slide   => navigate to that slide
-  const onClick = () => {
-    if (current === index) onOpenGallery(slide);
-    else handleSlideClick(index);
-  };
+  // center => open gallery; side => navigate
+  const onClick = () =>
+    current === index ? onOpenGallery(slide) : handleSlideClick(index);
 
-  // Custom cursor (use your own SVGs in /public/cursors/)
+  // Custom cursor (place SVGs at /public/cursors/zoom.svg and /public/cursors/arrow.svg)
   const cursor =
     current === index
       ? 'url("/cursors/zoom.svg") 16 16, zoom-in'
@@ -119,7 +116,7 @@ const Slide = ({
             decoding="sync"
           />
 
-          {/* Gradient overlay: bottom -> transparent (~80%) */}
+          {/* Gradient overlay */}
           <div className="pointer-events-none absolute inset-x-0 bottom-0 h-[80%] bg-gradient-to-t from-black/80 via-black/50 to-transparent" />
 
           {/* mild extra dim when active */}
@@ -169,7 +166,7 @@ const CarouselControl = ({
   );
 };
 
-/** Popup modal (compact 2×2 grid) */
+/** GSAP-animated popup (2×2 grid with stagger) */
 function GalleryModal({
   images,
   title,
@@ -179,37 +176,105 @@ function GalleryModal({
   title?: string;
   onClose: () => void;
 }) {
-  const modalRef = useRef<HTMLDivElement>(null);
+  const backdropRef = useRef<HTMLDivElement>(null);
+  const panelRef = useRef<HTMLDivElement>(null);
+  const tlRef = useRef<gsap.core.Timeline | null>(null);
 
-  useEffect(() => {
-    modalRef.current?.focus();
+  // Open animation
+  useLayoutEffect(() => {
+    const reduce =
+      typeof window !== "undefined" &&
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    const ctx = gsap.context(() => {
+      const tiles = gsap.utils.toArray<HTMLDivElement>(".js-modal-tile");
+
+      // initial state
+      gsap.set(backdropRef.current, { opacity: 0 });
+      gsap.set(panelRef.current, { opacity: 0, y: 10, scale: 0.98 });
+      gsap.set(tiles, { opacity: 0, scale: 0.92 });
+
+      if (reduce) {
+        gsap.set(backdropRef.current, { opacity: 1 });
+        gsap.set(panelRef.current, { opacity: 1, y: 0, scale: 1 });
+        gsap.set(tiles, { opacity: 1, scale: 1 });
+      } else {
+        tlRef.current = gsap
+          .timeline({ defaults: { ease: "power3.out" } })
+          .to(backdropRef.current, { opacity: 1, duration: 0.22 })
+          .to(
+            panelRef.current,
+            { opacity: 1, y: 0, scale: 1, duration: 0.28 },
+            "-=0.05"
+          )
+          .to(
+            tiles,
+            {
+              opacity: 1,
+              scale: 1,
+              duration: 0.18,
+              stagger: 0.06,
+              ease: "power2.out",
+            },
+            "-=0.10"
+          );
+      }
+    });
+
+    // focus & lock scroll
+    panelRef.current?.focus();
     const prev = document.body.style.overflow;
     document.body.style.overflow = "hidden";
+
     return () => {
       document.body.style.overflow = prev;
+      ctx.revert();
     };
   }, []);
 
-  const onBackdrop = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (e.target === e.currentTarget) onClose();
+  // Close with reversed timeline (then unmount)
+  const animateClose = () => {
+    const reduce =
+      typeof window !== "undefined" &&
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    if (tlRef.current && !reduce) {
+      tlRef.current.eventCallback("onReverseComplete", () => onClose());
+      tlRef.current.reverse();
+    } else {
+      onClose();
+    }
+  };
+
+  // Esc key
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => e.key === "Escape" && animateClose();
+    document.addEventListener("keydown", onKey);
+    return () => document.removeEventListener("keydown", onKey);
+  }, []);
+
+  // Backdrop click
+  const onBackdropClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (e.target === e.currentTarget) animateClose();
   };
 
   return (
     <div
-      ref={modalRef}
-      tabIndex={-1}
+      ref={backdropRef}
       className="fixed inset-0 z-[1000] flex items-center justify-center bg-black/70 p-4 backdrop-blur-sm"
       role="dialog"
       aria-modal="true"
       aria-label={title ? `${title} gallery` : "Image gallery"}
-      onClick={onBackdrop}
-      onKeyDown={(e) => e.key === "Escape" && onClose()}
+      onClick={onBackdropClick}
     >
-      {/* Smaller container on all screens */}
-      <div className="relative w-full max-w-md sm:max-w-lg md:max-w-2xl">
+      <div
+        ref={panelRef}
+        tabIndex={-1}
+        className="relative w-full max-w-lg outline-none sm:max-w-xl md:max-w-2xl"
+      >
         {/* Close */}
         <button
-          onClick={onClose}
+          onClick={animateClose}
           className="absolute right-2 top-2 z-[1001] rounded-full bg-white/90 px-3 py-1 text-sm font-medium text-black shadow hover:bg-white focus:outline-none focus:ring-2 focus:ring-white"
         >
           Close
@@ -221,14 +286,13 @@ function GalleryModal({
           </h3>
         )}
 
-        {/* Smaller tiles: center them and keep tight gaps */}
-        <div className="grid grid-cols-2 place-items-center gap-5">
+        {/* Compact tiles with stagger */}
+        <div className="grid grid-cols-2 place-items-center gap-3">
           {images.slice(0, 4).map((src, i) => (
             <div
               key={i}
-              className="relative overflow-hidden rounded-lg"
-              // narrow widths to keep them small; aspect ratio preserved
-              style={{ width: "20rem", aspectRatio: "4/3" }} // 120px
+              className="js-modal-tile relative overflow-hidden rounded-lg"
+              style={{ width: "20rem", aspectRatio: "4/3" }} // ~120px tiles
             >
               <img
                 src={src}
@@ -320,7 +384,7 @@ export function Carousel({ slides }: CarouselProps) {
         />
       </div>
 
-      {/* Modal */}
+      {/* GSAP-animated Modal */}
       {modalOpen && (
         <GalleryModal
           images={modalImages}
