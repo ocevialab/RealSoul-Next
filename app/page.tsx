@@ -1,6 +1,7 @@
 // import { Carousel } from "./components/carousel";
 import DrivenList from "./components/DrivenList";
 import FAQSection from "./components/FAQSection";
+import Footer from "./components/Footer";
 import Gallery from "./components/Gallery";
 import Hero from "./components/Hero";
 import Location from "./components/Location";
@@ -24,6 +25,7 @@ export default function Home() {
       <Testimonials />
       <div className="pointer-events-none inset-x-0 bottom-0 h-[50px]  md:h-[100px] bg-gradient-to-b from-darkGreen/80 to-darkGreen/95" />
       <FAQSection />
+      <Footer />
     </div>
   );
 }
