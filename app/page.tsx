@@ -19,7 +19,7 @@ export default function Home() {
       <DrivenList />
       <div className="pointer-events-none inset-x-0 bottom-0 h-[50px]  md:h-[100px] bg-gradient-to-b from-darkGreen/95 to-darkGreen/30" />
       <Location />
-      <div className="pointer-events-none inset-x-0 bottom-0 h-[50px]  md:h-[100px] bg-gradient-to-b from-darkGreen/95 to-darkGreen/30" />
+      <div className="pointer-events-none inset-x-0 bottom-0 h-[50px]  md:h-[100px] bg-gradient-to-t from-darkGreen/80 to-darkGreen/30" />
       <Testimonials />
     </div>
   );

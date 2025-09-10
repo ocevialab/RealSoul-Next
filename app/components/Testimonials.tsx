@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState, useLayoutEffect } from "react";
 import {
   motion,
   useMotionValue,
@@ -7,6 +7,11 @@ import {
   useTransform,
 } from "framer-motion";
 import Image from "next/image";
+
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+gsap.registerPlugin(ScrollTrigger);
 
 type GalleryImage = { id: number; src: string; alt: string };
 type Testimonial = {
@@ -287,8 +292,50 @@ const TestimonialsCarousel: React.FC<TestimonialsProps> = ({
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
+  const sectionRef = useRef<HTMLDivElement>(null);
+
+  useLayoutEffect(() => {
+    if (!sectionRef.current) return;
+    const prefersReduced = window.matchMedia(
+      "(prefers-reduced-motion: reduce)"
+    ).matches;
+    if (prefersReduced) return;
+
+    const ctx = gsap.context(() => {
+      // ---------- TEXT: play on enter, reverse on leave ----------
+      const textEls = gsap.utils.toArray<HTMLElement>("[data-reveal-text]");
+      textEls.forEach((el) => {
+        gsap.set(el, {
+          y: 30,
+          scale: 0.5,
+          opacity: 0,
+          transformOrigin: "50% 100%",
+        });
+        gsap.to(el, {
+          y: 0,
+          scale: 1,
+          opacity: 1,
+          ease: "power3.out",
+          duration: 0.9,
+          scrollTrigger: {
+            trigger: el,
+            start: "top 90%",
+            end: "top 0%",
+            toggleActions: "play reverse play reverse", // ✅ reverse for text
+            invalidateOnRefresh: true,
+          },
+        });
+      });
+    }, sectionRef);
+
+    return () => ctx.revert();
+  }, []);
+
   return (
-    <section className="relative w-full bg-neutral-950 py-16 overflow-hidden">
+    <section
+      className="relative w-full bg-darkGreen/80 py-16 overflow-hidden"
+      ref={sectionRef}
+    >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="text-center md:mb-16 mb-8">
@@ -426,8 +473,8 @@ const TestimonialsCarousel: React.FC<TestimonialsProps> = ({
         <div className="grid grid-cols-3  md:gap-6 gap-2">
           <motion.figure
             key={`${currentIndex}-main`}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
+            initial={{ opacity: 0, scale: 0 }}
+            animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.6 }}
             className="relative aspect-[16/10] col-span-2 overflow-hidden  border border-neutral-800/60 shadow-2xl group"
           >
@@ -442,8 +489,8 @@ const TestimonialsCarousel: React.FC<TestimonialsProps> = ({
           <div className="grid grid-cols-1 md:gap-6 gap-1">
             <motion.figure
               key={`${currentIndex}-1`}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
+              initial={{ opacity: 0, scale: 0 }}
+              animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.6, delay: 0.1 }}
               className="relative aspect-[16/10] overflow-hiddenborder border-neutral-800/60 shadow-2xl group"
             >
@@ -457,8 +504,8 @@ const TestimonialsCarousel: React.FC<TestimonialsProps> = ({
 
             <motion.figure
               key={`${currentIndex}-2`}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
+              initial={{ opacity: 0, scale: 0 }}
+              animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.6, delay: 0.2 }}
               className="relative aspect-[16/10] overflow-hidden  border border-neutral-800/60 shadow-2xl group"
             >
