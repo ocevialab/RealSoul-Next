@@ -492,7 +492,7 @@ const TestimonialsCarousel: React.FC<TestimonialsProps> = ({
               initial={{ opacity: 0, scale: 0 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.6, delay: 0.1 }}
-              className="relative aspect-[16/10] overflow-hiddenborder border-neutral-800/60 shadow-2xl group"
+              className="relative aspect-[16/10] overflow-hidden border border-neutral-800/60 shadow-2xl group"
             >
               <img
                 src={testimonials[currentIndex].galleryImages[1].src}
