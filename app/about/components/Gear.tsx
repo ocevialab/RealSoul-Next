@@ -44,7 +44,7 @@ function Gear() {
           duration: 0.8,
           scrollTrigger: {
             trigger: el,
-            start: "top 90% || bottom 10%",
+            start: "top 90% ",
             end: "bottom 20%",
             toggleActions: "play reverse play reverse",
             invalidateOnRefresh: true,
