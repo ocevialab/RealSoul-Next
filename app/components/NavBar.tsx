@@ -4,11 +4,9 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
+import { JSX } from "react/jsx-runtime";
 
-type NavItem = {
-  label: string;
-  href: string;
-};
+type NavItem = { label: string; href: string };
 
 const NAV_ITEMS: NavItem[] = [
   { label: "Home", href: "/" },
@@ -17,13 +15,16 @@ const NAV_ITEMS: NavItem[] = [
   { label: "Contact", href: "/contact" },
 ];
 
-export default function Navbar() {
+export default function Navbar(): JSX.Element {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
   const navRef = useRef<HTMLDivElement>(null);
 
   const isActive = (href: string) =>
     href === "/" ? pathname === "/" : pathname?.startsWith(href);
+
+  const isHome = pathname === "/";
+  const bgClass = isHome ? "bg-transparent" : "bg-darkGreen "; // fallback: bg-[#0A0E14]
 
   // Close menu on outside click
   useEffect(() => {
@@ -32,29 +33,16 @@ export default function Navbar() {
         setOpen(false);
       }
     }
-
-    if (open) {
-      document.addEventListener("mousedown", handleClickOutside);
-    } else {
-      document.removeEventListener("mousedown", handleClickOutside);
-    }
-
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
+    if (open) document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [open]);
 
   return (
     <nav
       ref={navRef}
-      // className="fixed inset-x-0 top-0 z-50
-      //  bg-[#0A0E14]/20 backdrop-blur supports-[backdrop-filter]:bg-[#0A0E14]/20 shadow-md
-      //  font-grotesk"
-      className="fixed inset-x-0 top-0 z-50 w-screen
-      
-       font-grotesk"
+      className={`${bgClass} fixed inset-x-0 top-0 z-50 w-screen font-grotesk transition-colors`}
     >
-      <div className="mx-auto flex  items-center justify-between px-4 py-3 md:px-16">
+      <div className="mx-auto flex items-center justify-between px-4 py-3 md:px-16">
         {/* Logo */}
         <Link
           href="/"
@@ -121,7 +109,7 @@ export default function Navbar() {
         }`}
       >
         <div
-          className={`absolute left-0 right-0 top-full origin-top bg-[#0A0E14]/40 backdrop-blur supports-[backdrop-filter]:bg-[#0A0E14]/40 shadow-lg transition-all duration-300  ${
+          className={`absolute left-0 right-0 top-full origin-top bg-[#0A0E14]/40 backdrop-blur supports-[backdrop-filter]:bg-[#0A0E14]/40 shadow-lg transition-all duration-300 ${
             open ? "scale-y-100 opacity-100" : "scale-y-95 opacity-0"
           }`}
         >
