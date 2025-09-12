@@ -74,7 +74,7 @@ function Gear() {
           scrollTrigger: {
             trigger: imgWrap,
             start: "top 100%",
-            end: "bottom 20%",
+            end: "top 20%",
             toggleActions: "play reverse play reverse",
             invalidateOnRefresh: true,
           },
@@ -97,7 +97,7 @@ function Gear() {
           scrollTrigger: {
             trigger: paraRoot || section3Ref.current!,
             start: "top 90%",
-            end: "bottom 20%",
+            end: "top 20%",
             toggleActions: "play reverse play reverse",
             invalidateOnRefresh: true,
           },
