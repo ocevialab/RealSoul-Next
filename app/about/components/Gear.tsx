@@ -21,10 +21,10 @@ function Gear() {
     { src: "/assets/images/gear7.png", alt: "Capture One" },
   ];
 
-  const sectionRef = useRef<HTMLDivElement>(null);
+  const section3Ref = useRef<HTMLDivElement>(null);
 
   useLayoutEffect(() => {
-    if (!sectionRef.current) return;
+    if (!section3Ref.current) return;
 
     const prefersReduced = window.matchMedia(
       "(prefers-reduced-motion: reduce)"
@@ -53,7 +53,7 @@ function Gear() {
       });
 
       // IMAGES — scale in sequentially (one after another)
-      const imgWrap = sectionRef.current!.querySelector<HTMLElement>(
+      const imgWrap = section3Ref.current!.querySelector<HTMLElement>(
         "[data-reveal-image]"
       );
       const photos = gsap.utils.toArray<HTMLElement>(
@@ -83,7 +83,7 @@ function Gear() {
 
       // PARAGRAPHS — staggered one after another
       const paraRoot =
-        sectionRef.current!.querySelector<HTMLElement>("[data-para-root]");
+        section3Ref.current!.querySelector<HTMLElement>("[data-para-root]");
       const paras = gsap.utils.toArray<HTMLElement>("[data-para]");
       if (paras.length) {
         gsap.set(paras, { y: 30, scale: 0.95, opacity: 0 });
@@ -95,7 +95,7 @@ function Gear() {
           duration: 0.75,
           stagger: 0.25,
           scrollTrigger: {
-            trigger: paraRoot || sectionRef.current!,
+            trigger: paraRoot || section3Ref.current!,
             start: "top 90%",
             end: "bottom 20%",
             toggleActions: "play reverse play reverse",
@@ -103,7 +103,7 @@ function Gear() {
           },
         });
       }
-    }, sectionRef);
+    }, section3Ref);
 
     return () => ctx.revert();
   }, []);
@@ -111,7 +111,7 @@ function Gear() {
   return (
     <section
       className="bg-gradient-to-b from-darkGreen/80 to-darkGreen/95 py-16 text-center"
-      ref={sectionRef}
+      ref={section3Ref}
     >
       <div className="mx-auto max-w-7xl px-4">
         <Heading HeaderText="Gear & Tools That Powers My Vision" />

@@ -21,10 +21,10 @@ function BeyondStudio() {
     { src: "/assets/images/wild6.png", alt: "Scarlet ibis in wetland" },
   ];
 
-  const sectionRef = useRef<HTMLDivElement>(null);
+  const section2Ref = useRef<HTMLDivElement>(null);
 
   useLayoutEffect(() => {
-    if (!sectionRef.current) return;
+    if (!section2Ref.current) return;
 
     const prefersReduced = window.matchMedia(
       "(prefers-reduced-motion: reduce)"
@@ -53,7 +53,7 @@ function BeyondStudio() {
       });
 
       // Images — sequential scale-in
-      const imgWrap = sectionRef.current!.querySelector<HTMLElement>(
+      const imgWrap = section2Ref.current!.querySelector<HTMLElement>(
         "[data-reveal-image]"
       );
       const cards = gsap.utils.toArray<HTMLElement>("[data-reveal-img]");
@@ -78,7 +78,7 @@ function BeyondStudio() {
           },
         });
       }
-    }, sectionRef);
+    }, section2Ref);
 
     return () => ctx.revert();
   }, []);
@@ -86,7 +86,7 @@ function BeyondStudio() {
   return (
     <section
       className="bg-gradient-to-b from-darkGreen/95 to-darkGreen py-16 text-center"
-      ref={sectionRef}
+      ref={section2Ref}
     >
       <div className="mx-auto max-w-6xl px-4">
         <div data-reveal-text>
