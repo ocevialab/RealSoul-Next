@@ -22,6 +22,16 @@ function BeyondStudio() {
   ];
 
   const section2Ref = useRef<HTMLDivElement>(null);
+  const loadedCount = useRef(0);
+
+  // helper: when all <img> are loaded, refresh ST
+  const onImgDone = () => {
+    loadedCount.current += 1;
+    if (loadedCount.current === images.length) {
+      // give the browser one frame to finish column layout
+      requestAnimationFrame(() => ScrollTrigger.refresh());
+    }
+  };
 
   useLayoutEffect(() => {
     if (!section2Ref.current) return;
@@ -32,7 +42,7 @@ function BeyondStudio() {
     if (prefersReduced) return;
 
     const ctx = gsap.context(() => {
-      // Headings/Subheading
+      // headings
       const textEls = gsap.utils.toArray<HTMLElement>("[data-reveal-text]");
       textEls.forEach((el) => {
         gsap.set(el, { y: 30, scale: 0.9, opacity: 0 });
@@ -45,21 +55,21 @@ function BeyondStudio() {
           scrollTrigger: {
             trigger: el,
             start: "top 85%",
-            end: "top 0%",
             toggleActions: "play reverse play reverse",
             invalidateOnRefresh: true,
+            // markers: true,
           },
         });
       });
 
-      // Images — sequential scale-in
+      // images (triggered by wrapper)
       const imgWrap = section2Ref.current!.querySelector<HTMLElement>(
         "[data-reveal-image]"
       );
       const cards = gsap.utils.toArray<HTMLElement>("[data-reveal-img]");
       if (imgWrap && cards.length) {
         gsap.set(cards, {
-          scale: 0,
+          scale: 0.9,
           opacity: 0,
           transformOrigin: "center center",
         });
@@ -72,15 +82,24 @@ function BeyondStudio() {
           scrollTrigger: {
             trigger: imgWrap,
             start: "top 85%",
-            end: "top 0%",
             toggleActions: "play reverse play reverse",
             invalidateOnRefresh: true,
+            // markers: true,
           },
         });
       }
     }, section2Ref);
 
-    return () => ctx.revert();
+    // extra safety: refresh after first paint and on window load
+    const t = setTimeout(() => ScrollTrigger.refresh(), 0);
+    const onLoad = () => ScrollTrigger.refresh();
+    window.addEventListener("load", onLoad);
+
+    return () => {
+      clearTimeout(t);
+      window.removeEventListener("load", onLoad);
+      ctx.revert();
+    };
   }, []);
 
   return (
@@ -114,6 +133,7 @@ function BeyondStudio() {
                   className="h-auto w-full object-cover"
                   priority={index < 3}
                   loading={index < 3 ? undefined : "lazy"}
+                  onLoadingComplete={onImgDone}
                 />
               </div>
             ))}

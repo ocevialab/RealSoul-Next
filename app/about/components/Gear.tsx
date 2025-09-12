@@ -22,6 +22,15 @@ function Gear() {
   ];
 
   const section3Ref = useRef<HTMLDivElement>(null);
+  const loadedCount = useRef(0);
+
+  const onLogoLoaded = () => {
+    loadedCount.current += 1;
+    if (loadedCount.current === gearItems.length) {
+      // let flex-wrap settle one frame, then refresh
+      requestAnimationFrame(() => ScrollTrigger.refresh());
+    }
+  };
 
   useLayoutEffect(() => {
     if (!section3Ref.current) return;
@@ -32,7 +41,7 @@ function Gear() {
     if (prefersReduced) return;
 
     const ctx = gsap.context(() => {
-      // HEADINGS/TEXT — play + reverse
+      // TEXT
       const textEls = gsap.utils.toArray<HTMLElement>("[data-reveal-text]");
       textEls.forEach((el) => {
         gsap.set(el, { y: 30, scale: 0.9, opacity: 0 });
@@ -45,67 +54,64 @@ function Gear() {
           scrollTrigger: {
             trigger: el,
             start: "top 85%",
-            end: "top 0%",
             toggleActions: "play reverse play reverse",
             invalidateOnRefresh: true,
+            // markers: true,
           },
         });
       });
 
-      // IMAGES — scale in sequentially (one after another)
+      // LOGOS (sequential scale-in)
       const imgWrap = section3Ref.current!.querySelector<HTMLElement>(
         "[data-reveal-image]"
       );
-      const photos = gsap.utils.toArray<HTMLElement>(
+      const logos = gsap.utils.toArray<HTMLElement>(
         "[data-reveal-image] [data-photo]"
       );
-      if (imgWrap && photos.length) {
-        gsap.set(photos, {
-          scale: 0,
+      if (imgWrap && logos.length) {
+        gsap.set(logos, {
+          scale: 0.9,
           opacity: 0,
           transformOrigin: "center center",
         });
-        gsap.to(photos, {
+        gsap.to(logos, {
           scale: 1,
           opacity: 1,
           ease: "power3.out",
-          duration: 0.9,
-          stagger: 0.25, // delay between image 1 -> image 2
+          duration: 0.6,
+          stagger: 0.15,
           scrollTrigger: {
             trigger: imgWrap,
             start: "top 85%",
-            end: "top 0%",
             toggleActions: "play reverse play reverse",
             invalidateOnRefresh: true,
-          },
-        });
-      }
-
-      // PARAGRAPHS — staggered one after another
-      const paraRoot =
-        section3Ref.current!.querySelector<HTMLElement>("[data-para-root]");
-      const paras = gsap.utils.toArray<HTMLElement>("[data-para]");
-      if (paras.length) {
-        gsap.set(paras, { y: 30, scale: 0.95, opacity: 0 });
-        gsap.to(paras, {
-          y: 0,
-          scale: 1,
-          opacity: 1,
-          ease: "power3.out",
-          duration: 0.75,
-          stagger: 0.25,
-          scrollTrigger: {
-            trigger: paraRoot || section3Ref.current!,
-            start: "top 90%",
-            end: "top 20%",
-            toggleActions: "play reverse play reverse",
-            invalidateOnRefresh: true,
+            // markers: true,
           },
         });
       }
     }, section3Ref);
 
-    return () => ctx.revert();
+    // ---- make sure start positions are correct ----
+    const ro = new ResizeObserver(() => ScrollTrigger.refresh());
+    ro.observe(section3Ref.current);
+
+    // refresh after first paint, fonts, and window load
+    const t = setTimeout(() => ScrollTrigger.refresh(), 0);
+    const onLoad = () => ScrollTrigger.refresh();
+    window.addEventListener("load", onLoad);
+
+    // font metric changes can shift layout
+
+    if (document.fonts?.ready) {
+      document.fonts.ready.then(() => ScrollTrigger.refresh());
+    }
+
+    return () => {
+      clearTimeout(t);
+      window.removeEventListener("load", onLoad);
+      ro.disconnect();
+      ctx.revert();
+    };
   }, []);
 
   return (
@@ -114,22 +120,31 @@ function Gear() {
       ref={section3Ref}
     >
       <div className="mx-auto max-w-7xl px-4">
-        <Heading HeaderText="Gear & Tools That Powers My Vision" />
-        <SubHeading text="At Realsoul, I believe that exceptional photography is driven by exceptional gear. My carefully curated selection of top-tier equipment ensures that I capture every moment with precision, clarity, and artistry. From cutting-edge cameras to versatile lenses and reliable accessories, my gear empowers me to bring your vision to life in stunning detail." />
+        {/* add data hooks so GSAP finds these */}
+        <div data-reveal-text>
+          <Heading HeaderText="Gear & Tools That Powers My Vision" />
+        </div>
+        <div data-reveal-text>
+          <SubHeading text="At Realsoul, I believe that exceptional photography is driven by exceptional gear. My carefully curated selection of top-tier equipment ensures that I capture every moment with precision, clarity, and artistry. From cutting-edge cameras to versatile lenses and reliable accessories, my gear empowers me to bring your vision to life in stunning detail." />
+        </div>
 
-        <div className="mx-auto mt-10 flex max-w-6xl flex-wrap items-center justify-between gap-6 sm:gap-8 md:gap-12">
+        {/* add data-reveal-image wrapper and data-photo on each logo */}
+        <div
+          className="mx-auto mt-10 flex max-w-7xl flex-wrap items-center justify-between gap-6 sm:gap-8 md:gap-12"
+          data-reveal-image
+        >
           {gearItems.map((item, i) => (
-            <Image
-              key={i}
-              src={item.src}
-              alt={item.alt}
-              // Intrinsic dimensions (can be any consistent values)
-              width={100}
-              height={100}
-              // Control actual display size with Tailwind
-              className="h-3 w-auto object-contain  md:h-6"
-              loading="lazy"
-            />
+            <div key={i} data-photo>
+              <Image
+                src={item.src}
+                alt={item.alt}
+                width={100}
+                height={100}
+                className="h-6 w-auto object-contain md:h-8"
+                loading="lazy"
+                onLoadingComplete={onLogoLoaded}
+              />
+            </div>
           ))}
         </div>
       </div>
