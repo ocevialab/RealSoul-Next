@@ -44,8 +44,8 @@ function Gear() {
           duration: 0.8,
           scrollTrigger: {
             trigger: el,
-            start: "top 100%",
-            end: "bottom 20%",
+            start: "top 85%",
+            end: "top 0%",
             toggleActions: "play reverse play reverse",
             invalidateOnRefresh: true,
           },
@@ -73,8 +73,8 @@ function Gear() {
           stagger: 0.25, // delay between image 1 -> image 2
           scrollTrigger: {
             trigger: imgWrap,
-            start: "top 100%",
-            end: "top 20%",
+            start: "top 85%",
+            end: "top 0%",
             toggleActions: "play reverse play reverse",
             invalidateOnRefresh: true,
           },

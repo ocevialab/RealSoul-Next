@@ -44,8 +44,8 @@ function BeyondStudio() {
           duration: 0.8,
           scrollTrigger: {
             trigger: el,
-            start: "top 90%",
-            end: "bottom 20%",
+            start: "top 85%",
+            end: "top 0%",
             toggleActions: "play reverse play reverse",
             invalidateOnRefresh: true,
           },
@@ -71,8 +71,8 @@ function BeyondStudio() {
           stagger: 0.25,
           scrollTrigger: {
             trigger: imgWrap,
-            start: "top 90%",
-            end: "bottom 20%",
+            start: "top 85%",
+            end: "top 0%",
             toggleActions: "play reverse play reverse",
             invalidateOnRefresh: true,
           },
