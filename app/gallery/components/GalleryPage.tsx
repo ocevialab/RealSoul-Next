@@ -233,7 +233,7 @@ export default function GalleryPage(): JSX.Element {
         {/* Category Cards */}
         <div
           data-category-wrap
-          className="mx-auto grid max-w-6xl grid-cols-1 gap-5 px-2 pb-8 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5"
+          className="mx-auto grid max-w-6xl grid-cols-3 gap-5 px-2 md:pb-8 pb-4 md:grid-cols-3 lg:grid-cols-5"
         >
           {CATEGORY_CARDS.map(({ name, image }) => {
             const active = activeFilter === name;
@@ -252,7 +252,7 @@ export default function GalleryPage(): JSX.Element {
                   "bg-[#0F1218]",
                 ].join(" ")}
               >
-                <div className="relative h-40 w-full">
+                <div className="relative md:h-40 h-20 w-full">
                   <Image
                     src={image}
                     alt={`${name} category`}
@@ -278,7 +278,7 @@ export default function GalleryPage(): JSX.Element {
         {/* Masonry container */}
         <div
           data-reveal-image
-          className="masonry mx-auto columns-1 gap-4 sm:columns-2 md:columns-3 lg:columns-4"
+          className="masonry mx-auto columns-3 gap-4 sm:columns-3 md:columns-3 lg:columns-4"
         >
           {shuffledImages.map((img, idx) => (
             <div
