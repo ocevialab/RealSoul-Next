@@ -145,24 +145,23 @@ const DEFAULT_TESTIMONIALS: Testimonial[] = [
   },
   {
     id: 6,
-    name: "Lisa & Tom",
-    image:
-      "https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?w=150&h=150&fit=crop&crop=face",
-    text: "The most beautiful wedding photos we could have asked for. Every moment was captured with such artistry and emotion.",
+    name: "Madubashini Disanayaka",
+    image: "/assets/images/testa6.jpg",
+    text: "We had an amazing family photo shoot with Real Soul Photography. The photos turned out beautifully, capturing our family's essence perfectly. Highly professional and great with kids. Highly recommend!",
     galleryImages: [
       {
         id: 1,
-        src: "https://images.unsplash.com/photo-1591604466107-ec97de577aff?w=800&h=500&fit=crop",
+        src: "/assets/images/testa6-a.jpg",
         alt: "Vineyard wedding",
       },
       {
         id: 2,
-        src: "https://images.unsplash.com/photo-1460978812857-470ed1c2e91d?w=400&h=250&fit=crop",
+        src: "/assets/images/testa6-b.jpg",
         alt: "Wedding bouquet",
       },
       {
         id: 3,
-        src: "https://images.unsplash.com/photo-1605216123436-91a2bab76904?w=400&h=250&fit=crop",
+        src: "/assets/images/testa6-c.jpg",
         alt: "Dancing",
       },
     ],
