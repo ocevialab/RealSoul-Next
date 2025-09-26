@@ -30,18 +30,18 @@ interface TestimonialsProps {
 const DEFAULT_TESTIMONIALS: Testimonial[] = [
   {
     id: 1,
-    name: "Emily & Jason",
+    name: "Kalani Bulathsinghala",
     image: "/assets/images/testa1.jpg",
-    text: "We couldn't be happier with how the photos turned out. The team was incredibly friendly, patient, and knew exactly how to guide us without making anything feel staged. Every photo felt natural and full of emotion.",
+    text: "Real Soul Photography did an incredible job capturing our son's 1st birthday. Every photo tells a story, and they beautifully captured the little moments that mean the most. Super professional, punctual, and talented. We highly recommend their services to anyone looking for heartfelt, high-quality photography. Thank you for your amazing work and kind energy!",
     galleryImages: [
       {
         id: 1,
-        src: "/assets/images/testa1-a.jpg",
+        src: "/assets/images/testa1-b.jpg",
         alt: "Wedding couple",
       },
       {
         id: 2,
-        src: "/assets/images/testa1-b.jpg",
+        src: "/assets/images/testa1-a.jpg",
         alt: "Wedding ceremony",
       },
       {
@@ -53,9 +53,9 @@ const DEFAULT_TESTIMONIALS: Testimonial[] = [
   },
   {
     id: 2,
-    name: "Sarah & Michael",
+    name: "Sanka Battage",
     image: "/assets/images/testa2.jpg",
-    text: "The attention to detail was incredible. Every moment was captured beautifully, and the final photos exceeded our expectations. The photographer made us feel so comfortable throughout the entire process.",
+    text: "🌟🌟🌟🌟🌟 An amazing photography experience! 📸 Every special moment from our Daughter Brielle’s 1st birthday was captured so beautifully and naturally. The photos are full of life, detail, and emotion – memories we’ll cherish forever. 💕 Professional, friendly, and creative service at a very reasonable price. Highly recommend to anyone looking for the perfect photographer for their events! 🙌✨",
     galleryImages: [
       {
         id: 1,
@@ -76,9 +76,9 @@ const DEFAULT_TESTIMONIALS: Testimonial[] = [
   },
   {
     id: 3,
-    name: "Jessica ",
-    image: "/assets/images/testa3-c.jpg",
-    text: "Our wedding photos are absolutely stunning! The photographer has an amazing eye for capturing those perfect moments. We couldn't have asked for a better experience or more beautiful memories.",
+    name: "Manjula Kumara ",
+    image: "/assets/images/testa3.jpg",
+    text: "Thank you so much for the wonderful shots! They are truly stunning and we will cherish these memories forever.🥰💕 Thank you so much again for your great work and highly recommend your incredible work! Wish you all the very best for your next steps 💐🤝",
     galleryImages: [
       {
         id: 1,
@@ -99,48 +99,46 @@ const DEFAULT_TESTIMONIALS: Testimonial[] = [
   },
   {
     id: 4,
-    name: "Anna & Lucas",
-    image:
-      "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150&h=150&fit=crop&crop=face",
-    text: "Professional from start to finish. They captured the day exactly how we felt it—joyful, relaxed, and unforgettable.",
+    name: "Gagandeep Kaur",
+    image: "/assets/images/testa4.jpg",
+    text: "Really professional photographer with great ideas.",
     galleryImages: [
       {
         id: 1,
-        src: "https://images.unsplash.com/photo-1537633552985-df8429e8048b?w=800&h=500&fit=crop",
+        src: "/assets/images/testa4-a.jpg",
         alt: "Church wedding",
       },
       {
         id: 2,
-        src: "https://images.unsplash.com/photo-1525772764200-be829ab4612e?w=400&h=250&fit=crop",
+        src: "/assets/images/testa4-b.jpg",
         alt: "Wedding party",
       },
       {
         id: 3,
-        src: "https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=400&h=250&fit=crop",
+        src: "/assets/images/testa4-c.jpg",
         alt: "Celebration",
       },
     ],
   },
   {
     id: 5,
-    name: "Maria & James",
-    image:
-      "https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?w=150&h=150&fit=crop&crop=face",
-    text: "Absolutely magical experience! Every photo tells our story perfectly. The quality and creativity exceeded all our expectations.",
+    name: "Kush Vyas",
+    image: "/assets/images/testa5.jpg",
+    text: "Fantastic experience with Dushan, he covered our little one’s first birthday and clicked amazing pictures. Would recommend him to our friends and family.",
     galleryImages: [
       {
         id: 1,
-        src: "https://images.unsplash.com/photo-1606800052052-a08af7148866?w=800&h=500&fit=crop",
+        src: "/assets/images/testa5-a.jpg",
         alt: "Sunset wedding",
       },
       {
         id: 2,
-        src: "https://images.unsplash.com/photo-1519741497674-611481863552?w=400&h=250&fit=crop",
+        src: "/assets/images/testa5-b.jpg",
         alt: "Romantic moment",
       },
       {
         id: 3,
-        src: "https://images.unsplash.com/photo-1526472518851-75624ce04f6a?w=400&h=250&fit=crop",
+        src: "/assets/images/testa5-c.jpg",
         alt: "Wedding cake",
       },
     ],
@@ -404,7 +402,7 @@ const TestimonialsCarousel: React.FC<TestimonialsProps> = ({
         </div>
 
         {/* 3D Carousel Container */}
-        <div className="relative h-[250px] mb-12">
+        <div className="relative h-[280px] mb-12">
           {/* Gradient overlays
           <div className="absolute left-0 top-0 w-32 h-full bg-gradient-to-r from-neutral-950 to-transparent z-10 pointer-events-none" />
           <div className="absolute right-0 top-0 w-32 h-full bg-gradient-to-l from-neutral-950 to-transparent z-10 pointer-events-none" /> */}
@@ -445,7 +443,7 @@ const TestimonialsCarousel: React.FC<TestimonialsProps> = ({
                   animate={{ opacity: 1 }}
                   transition={{ delay: i * 0.1 }}
                 >
-                  <div className="bg-gradient-to-br bg-white/20 shadow-2xl p-6 md:p-8 md:h-[200px] h-[220px] flex flex-col justify-center">
+                  <div className="bg-gradient-to-br bg-white/20 shadow-2xl p-6 md:p-8 md:h-[250px] h-[280px] flex flex-col justify-center">
                     <div className="flex items-center mb-6">
                       <div className="md:w-10 md:h-10 h-6 w-6 rounded-full overflow-hidden ring-4 ring-gold shadow-lg">
                         <img
